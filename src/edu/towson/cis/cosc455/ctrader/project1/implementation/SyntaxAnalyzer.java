@@ -4,7 +4,9 @@ public class SyntaxAnalyzer implements edu.towson.cis.cosc455.ctrader.project1.i
 
 	@Override
 	public void markdown() throws CompilerException {
-		// TODO Auto-generated method stub
+		if(Compiler.currentToken.equalsIgnoreCase(Tokens.DOCB)){
+			
+		}
 
 	}
 
