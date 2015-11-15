@@ -1,5 +1,7 @@
 package edu.towson.cis.cosc455.ctrader.project1.interfaces;
 
+import Exceptions.CompilerException;
+
 /**
  * COSC 455 Programming Languages: Implementation and Design.
  *
@@ -22,8 +24,9 @@ package edu.towson.cis.cosc455.ctrader.project1.interfaces;
 	/**
 	 * This is the public method to be called when the Syntax Analyzer needs a new
 	 * token to be parsed.
+	 * @throws CompilerException 
 	 */
-	public void getNextToken();
+	public void getNextToken() throws CompilerException;
 
 	/**
 	 * This is method gets the next character from the input and places it in
@@ -45,13 +48,14 @@ package edu.towson.cis.cosc455.ctrader.project1.interfaces;
 	 * @param c the current character
 	 * @return true, if is space; otherwise false
 	 */
-	boolean isSpace(String c);
+	boolean isSpace();
 
 	/**
 	 * This method checks to see if the current, possible token is legal in the
 	 * defined grammar.
 	 *
 	 * @return true, if it is a legal token, otherwise false
+	 * @throws CompilerException 
 	 */
-	boolean lookupToken();
+	boolean lookupToken() throws CompilerException;
 }

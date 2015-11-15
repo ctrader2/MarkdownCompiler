@@ -1,7 +1,7 @@
 
 package edu.towson.cis.cosc455.ctrader.project1.interfaces;
 
-import edu.towson.cis.cosc455.ctrader.project1.implementation.CompilerException;
+import Exceptions.CompilerException;
 
 /**
  * COSC 455 Programming Languages: Implementation and Design.

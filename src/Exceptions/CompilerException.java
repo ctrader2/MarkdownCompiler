@@ -1,4 +1,4 @@
-package edu.towson.cis.cosc455.ctrader.project1.implementation;
+package Exceptions;
 
 /**
  * Parsing exception. For simplicity, this is used for both lexical errors as
