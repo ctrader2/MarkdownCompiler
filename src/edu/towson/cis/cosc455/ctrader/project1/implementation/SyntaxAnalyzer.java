@@ -47,11 +47,13 @@ public class SyntaxAnalyzer implements edu.towson.cis.cosc455.ctrader.project1.i
 	}
 
 	
-
 	@Override
 	public void body() throws CompilerException {
+		while(onceMore()){
+			variableDefine();
 			paragraph(); 
 			innerItem();
+		}
 			checkSyntax();
 	}
 
@@ -61,10 +63,9 @@ public class SyntaxAnalyzer implements edu.towson.cis.cosc455.ctrader.project1.i
 		
 		if(Compiler.inputQueue.peek().equalsIgnoreCase(Tokens.sPARAGRAPH)){
 			Compiler.outputQueue.add(Compiler.inputQueue.remove());
-			
+			variableDefine();
 			while(onceMore())
 				innerItem();
-			
 			if(Compiler.inputQueue.peek().equalsIgnoreCase(Tokens.ePARAGRAPH)){
 				Compiler.outputQueue.add(Compiler.inputQueue.remove());
 			}
@@ -82,13 +83,30 @@ public class SyntaxAnalyzer implements edu.towson.cis.cosc455.ctrader.project1.i
 
 	@Override
 	public void variableDefine() throws CompilerException {
-		// TODO Auto-generated method stub
-
+		if(Compiler.inputQueue.peek().equalsIgnoreCase(Tokens.sVARIABLE)){
+			Compiler.outputQueue.add(Compiler.inputQueue.remove());
+			innerText();
+			if(Compiler.inputQueue.peek().equalsIgnoreCase(Tokens.dVARIABLE)){
+				Compiler.outputQueue.add(Compiler.inputQueue.remove());
+			}else throw new CompilerException("Error: No Variable Definition.");
+			innerText();
+			if(Compiler.inputQueue.peek().equalsIgnoreCase(Tokens.eVARIABLE)){
+				Compiler.outputQueue.add(Compiler.inputQueue.remove());
+			}else throw new CompilerException("Error: Variable Definition");
+		}
+		
 	}
 
 	@Override
 	public void variableUse() throws CompilerException {
-		// TODO Auto-generated method stub
+		if(Compiler.inputQueue.peek().equalsIgnoreCase(Tokens.uVARIABLE)){
+			Compiler.outputQueue.add(Compiler.inputQueue.remove());
+			innerText();
+			if(Compiler.inputQueue.peek().equalsIgnoreCase(Tokens.eVARIABLE))
+				Compiler.outputQueue.add(Compiler.inputQueue.remove());
+			else
+				throw new CompilerException("Syntax Error: Variable use");
+		}
 
 	}
 
@@ -124,7 +142,8 @@ public class SyntaxAnalyzer implements edu.towson.cis.cosc455.ctrader.project1.i
 	public void listitem() throws CompilerException {
 		if(Compiler.inputQueue.peek().equalsIgnoreCase(Tokens.sLIST)){
 			Compiler.outputQueue.add(Compiler.inputQueue.remove());
-			innerText();
+			while(onceMore())
+				innerItem();
 			if(Compiler.inputQueue.peek().equalsIgnoreCase(Tokens.eLIST)){
 				Compiler.outputQueue.add(Compiler.inputQueue.remove());
 			}
@@ -145,7 +164,9 @@ public class SyntaxAnalyzer implements edu.towson.cis.cosc455.ctrader.project1.i
 		else if(Compiler.inputQueue.peek().equals(Tokens.sLINKDESCRIPTION))
 			link();
 		else if(Compiler.inputQueue.peek().equals(Tokens.sLIST))
-			{System.out.println("here");listitem();}
+			listitem();
+		else if(Compiler.inputQueue.peek().equals(Tokens.uVARIABLE))
+			variableUse();
 		else if(!Arrays.asList(Tokens.TOKENS).contains(Compiler.inputQueue.peek().toUpperCase()))
 			innerText();		
 		else { }
@@ -204,7 +225,8 @@ public class SyntaxAnalyzer implements edu.towson.cis.cosc455.ctrader.project1.i
 		innerText();
 		String next = Compiler.inputQueue.peek();
 		return next.equalsIgnoreCase(Tokens.sAUDIO) || next.equalsIgnoreCase(Tokens.sBOLD) || next.equalsIgnoreCase(Tokens.sITALIC) ||
-				next.equalsIgnoreCase(Tokens.sLINKDESCRIPTION) || next.equalsIgnoreCase(Tokens.sLIST); 
+				next.equalsIgnoreCase(Tokens.sLINKDESCRIPTION) || next.equalsIgnoreCase(Tokens.sLIST) || next.equalsIgnoreCase(Tokens.uVARIABLE) 
+				|| next.equalsIgnoreCase(Tokens.sPARAGRAPH) || next.equalsIgnoreCase(Tokens.sVARIABLE);
 				
 	}
 	
