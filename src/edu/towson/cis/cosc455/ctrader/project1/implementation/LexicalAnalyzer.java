@@ -12,11 +12,36 @@ public class LexicalAnalyzer implements edu.towson.cis.cosc455.ctrader.project1.
 		if(Compiler.fileReader.hasNext()){
 			currentToken = Compiler.fileReader.next();
 			currentPosition = 0;
-			//System.out.println(currentToken);
-			//System.out.println(currentToken.length());
+			
 			while(currentPosition < currentToken.length()){
 				getCharacter();
 				addCharacter();
+				if(isAudio()){
+					Compiler.inputQueue.add(tokenBuilder.toString());
+					tokenBuilder.deleteCharAt(0);
+				}
+				else if(isVideo()){
+					Compiler.inputQueue.add(tokenBuilder.toString());
+					tokenBuilder.deleteCharAt(0);
+				}
+				else if(isAddressBeg()){
+					Compiler.inputQueue.add(tokenBuilder.toString());
+					tokenBuilder.deleteCharAt(0);
+				}
+				else if(isAddressEnd()){
+					Compiler.inputQueue.add(tokenBuilder.substring(0, tokenBuilder.length()-1));
+					tokenBuilder.delete(0, tokenBuilder.length()-1);
+				}
+				else if(isLinkBeg()){
+					Compiler.inputQueue.add(tokenBuilder.toString());
+					tokenBuilder.deleteCharAt(0);
+				}
+				else if(isLinkEnd()){
+					Compiler.inputQueue.add(tokenBuilder.substring(0, tokenBuilder.length()-1));
+					tokenBuilder.delete(0, tokenBuilder.length()-1);
+					Compiler.inputQueue.add(tokenBuilder.substring(0));
+					tokenBuilder.deleteCharAt(0);
+				}
 				currentPosition++;
 			}	
 			lookupToken();
@@ -29,14 +54,11 @@ public class LexicalAnalyzer implements edu.towson.cis.cosc455.ctrader.project1.
 	@Override
 	public void getCharacter() {
 		nextCharacter = currentToken.charAt(currentPosition);
-		//System.out.println(nextCharacter);
 	}
 
 	@Override
 	public void addCharacter() {
-		//System.out.println("next: " + nextCharacter);
 		tokenBuilder.append(nextCharacter);
-		System.out.println(tokenBuilder);
 	}
 
 	@Override
@@ -45,6 +67,44 @@ public class LexicalAnalyzer implements edu.towson.cis.cosc455.ctrader.project1.
 			return true;
 		return false;
 	}
+	
+	public boolean isAudio(){
+		if(tokenBuilder.charAt(0) == '@')
+			return true;
+		return false;
+	}
+	
+	public boolean isVideo(){
+		if(tokenBuilder.charAt(0) == '%')
+			return true;
+		return false;
+	}
+	
+	public boolean isAddressBeg(){
+		if(tokenBuilder.charAt(0) == '(')
+			return true;
+		return false;
+	}
+	
+	public boolean isAddressEnd(){
+		if(tokenBuilder.charAt(tokenBuilder.length() - 1) == ')')
+			return true;
+		return false;
+	}
+	
+	public boolean isLinkBeg(){
+		if(tokenBuilder.charAt(0) == '[')
+			return true;
+		return false;
+	}
+	
+	public boolean isLinkEnd(){
+		if(tokenBuilder.charAt(tokenBuilder.length() - 1) == ']')
+			return true;
+		return false;
+	}
+	
+	
 
 	@Override
 	public boolean lookupToken() throws CompilerException {

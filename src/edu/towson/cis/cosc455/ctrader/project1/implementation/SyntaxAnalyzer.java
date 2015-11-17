@@ -10,11 +10,12 @@ public class SyntaxAnalyzer implements edu.towson.cis.cosc455.ctrader.project1.i
 	public void markdown() throws CompilerException {
 		if(Compiler.inputQueue.peek().equalsIgnoreCase(Tokens.sHTML)){
 				Compiler.outputQueue.add(Compiler.inputQueue.remove());
+				variableDefine();
 				head();
 				body();
-				//System.out.print(Compiler.inputQueue.peek());
 				if(Compiler.inputQueue.peek().equalsIgnoreCase(Tokens.eHTML)){
 					System.out.println("Syntax Check complete");
+					Compiler.outputQueue.add(Compiler.inputQueue.remove());
 				}else throw new CompilerException("Syntax Error: .mkd file does not end with #END");
 		}else throw new CompilerException("Syntax Error: .mkd file does not start with #BEGIN");
 		return;
@@ -49,8 +50,8 @@ public class SyntaxAnalyzer implements edu.towson.cis.cosc455.ctrader.project1.i
 	
 	@Override
 	public void body() throws CompilerException {
+		variableDefine();
 		while(onceMore()){
-			variableDefine();
 			paragraph(); 
 			innerItem();
 		}
@@ -167,6 +168,10 @@ public class SyntaxAnalyzer implements edu.towson.cis.cosc455.ctrader.project1.i
 			listitem();
 		else if(Compiler.inputQueue.peek().equals(Tokens.uVARIABLE))
 			variableUse();
+		else if(Compiler.inputQueue.peek().equals(Tokens.sBREAK))
+			newline();
+		else if(Compiler.inputQueue.peek().equals(Tokens.sVIDEO))
+			video();
 		else if(!Arrays.asList(Tokens.TOKENS).contains(Compiler.inputQueue.peek().toUpperCase()))
 			innerText();		
 		else { }
@@ -199,7 +204,6 @@ public class SyntaxAnalyzer implements edu.towson.cis.cosc455.ctrader.project1.i
 	public void audio() throws CompilerException {
 		if(Compiler.inputQueue.peek().equalsIgnoreCase(Tokens.sAUDIO)){
 			Compiler.outputQueue.add(Compiler.inputQueue.remove());
-			innerText();
 			if(Compiler.inputQueue.peek().equalsIgnoreCase(Tokens.sADDRESS)){
 				Compiler.outputQueue.add(Compiler.inputQueue.remove());
 				innerText();
@@ -211,13 +215,23 @@ public class SyntaxAnalyzer implements edu.towson.cis.cosc455.ctrader.project1.i
 
 	@Override
 	public void video() throws CompilerException {
-		// TODO Auto-generated method stub
+		if(Compiler.inputQueue.peek().equalsIgnoreCase(Tokens.sVIDEO)){
+			Compiler.outputQueue.add(Compiler.inputQueue.remove());
+			innerText();
+			if(Compiler.inputQueue.peek().equalsIgnoreCase(Tokens.sADDRESS)){
+				Compiler.outputQueue.add(Compiler.inputQueue.remove());
+				innerText();
+			if(Compiler.inputQueue.peek().equalsIgnoreCase(Tokens.eADDRESS))
+				Compiler.outputQueue.add(Compiler.inputQueue.remove());
+			}else throw new CompilerException("error: videeeo address");
+		}
 
 	}
 
 	@Override
 	public void newline() throws CompilerException {
-		// TODO Auto-generated method stub
+		if(Compiler.inputQueue.peek().equalsIgnoreCase(Tokens.sBREAK))
+			Compiler.outputQueue.add(Compiler.inputQueue.remove());
 
 	}
 	
@@ -225,8 +239,8 @@ public class SyntaxAnalyzer implements edu.towson.cis.cosc455.ctrader.project1.i
 		innerText();
 		String next = Compiler.inputQueue.peek();
 		return next.equalsIgnoreCase(Tokens.sAUDIO) || next.equalsIgnoreCase(Tokens.sBOLD) || next.equalsIgnoreCase(Tokens.sITALIC) ||
-				next.equalsIgnoreCase(Tokens.sLINKDESCRIPTION) || next.equalsIgnoreCase(Tokens.sLIST) || next.equalsIgnoreCase(Tokens.uVARIABLE) 
-				|| next.equalsIgnoreCase(Tokens.sPARAGRAPH) || next.equalsIgnoreCase(Tokens.sVARIABLE);
+				next.equalsIgnoreCase(Tokens.sLINKDESCRIPTION) || next.equals(Tokens.sBREAK)|| next.equalsIgnoreCase(Tokens.sLIST) || next.equalsIgnoreCase(Tokens.uVARIABLE) 
+				|| next.equalsIgnoreCase(Tokens.sPARAGRAPH) || next.equalsIgnoreCase(Tokens.sVARIABLE)|| next.equalsIgnoreCase(Tokens.sVIDEO);
 				
 	}
 	

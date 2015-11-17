@@ -53,6 +53,13 @@ public class Tokens {
 	//<iframe/>
 	public static final String sVIDEO = "%";
 	
+	//Variables
+	public static final String sVARIABLE = "$DEF";
+	public static final String eVARIABLE = "$END";
+	public static final String uVARIABLE = "$USE";
+	public static final String dVARIABLE = "=";
+			
+	
 	//Declare Array of Legal Characters
 	public static final char[] CHARACTERS = "abcdefghijklmnopqrstuvwxyz0123456789,.'\":?_!/".toCharArray();
 	public static final String TAB = "\t";
@@ -60,12 +67,7 @@ public class Tokens {
 	
 	//Declare Array of Legal Tokens
 	public static final String[] TOKENS = new String[]{sHTML, eHTML, sHEAD, eHEAD, sTITLE, eTITLE, sPARAGRAPH, ePARAGRAPH, sBOLD, eBOLD, 
-			sITALIC, eITALIC, sLIST, eLIST, sBREAK, sLINKDESCRIPTION, eLINKDESCRIPTION, sADDRESS, eADDRESS, sAUDIO, sVIDEO,};
-	
-	//Method Used to See if Token Starts with Identifier
-	//public boolean identifier(char c){
-		//if(c == '#')
-			
+			sITALIC, eITALIC, sLIST, eLIST, sBREAK, sLINKDESCRIPTION, eLINKDESCRIPTION, sADDRESS, eADDRESS, sAUDIO, sVIDEO, sVARIABLE, eVARIABLE, uVARIABLE, dVARIABLE};
 	}
 	
 

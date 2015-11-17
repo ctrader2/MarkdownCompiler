@@ -1,16 +1,15 @@
 package edu.towson.cis.cosc455.ctrader.project1.implementation;
 //Imports Used in Compiler.java
 import java.awt.Desktop;
-
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
-import java.util.Stack;
-
 import Exceptions.BadFileExtension;
 import Exceptions.CompilerException;
 
@@ -23,19 +22,22 @@ public class Compiler {
 	static Scanner fileReader;
 	static final String MKD = "mkd";
 	
-	//Stacks Used by Lexer and Sexer
+	//Stacks Used by Lexical Analyzer and Syntax Analyzer
 	static Queue<String> inputQueue = new LinkedList<String>();
 	static Queue<String> outputQueue = new LinkedList<String>();
+	
+	//Final String Used for Storing HTML translated Markdown Language 
+	static StringBuilder htmlSB = new StringBuilder();
 	
 	
 	public static void main(String[] args) throws BadFileExtension, CompilerException {
 		//Get File  Check Extension
-		file = ("Test3.mkd");
+		file = ("Test10.mkd");
 		try{
-			extension = file.split("\\.")[1];
-			if(!extension.equals(MKD)) throw new BadFileExtension("Error - file extension must be '.mkd' - Exiting Program");			
+			extension = file.split("\\.")[1];  //Store file extension in string 'extension'
+			if(!extension.equals(MKD)) throw new BadFileExtension("Error - file extension must be '.mkd' - Exiting Program"); //check to ensure correct file extension '.mkd' is used		
 		}catch(ArrayIndexOutOfBoundsException e){
-			System.out.println("Bad File Name - Exiting Program");
+			System.out.println("Bad File Name - Exiting Program"); //throw error if no file extension is specified
 			e.printStackTrace();
 		}
 		try{
@@ -43,21 +45,42 @@ public class Compiler {
 			markdownFile = new File(file);
 		}
 		catch(FileNotFoundException e){
-			System.out.println("File Not Found. Exiting Program");
+			System.out.println("File Not Found. Exiting Program"); //throw error if file does not exist
 			e.printStackTrace();
 		}
 		
 		
 		//Now that file is verified, begin compilation..
+		//Lexical Analysis
 		LexicalAnalyzer lexer = new LexicalAnalyzer();
 		lexer.getNextToken();
-		System.out.println("Lexer Complete");
-		
+		//Syntax Analysis
 		SyntaxAnalyzer sexer = new SyntaxAnalyzer();
 		sexer.markdown();
-		System.out.println("Sexer Complete");
+		//Semantic Analysis
+		SemanticAnalyzer mexer = new SemanticAnalyzer();
+		mexer.runMexer();
+		
+		
+		try {
+				String use = Compiler.file + ".html";
+				File file = new File(use);
 
-	}
+				if (!file.exists()) {
+					file.createNewFile();
+				}
+				FileWriter fw = new FileWriter(file.getAbsoluteFile());
+				BufferedWriter bw = new BufferedWriter(fw);
+				bw.write(htmlSB.toString());
+				bw.close();
+
+				openHTMLFileInBrowser(use);
+			} catch(IOException ioe) {
+				ioe.printStackTrace();
+			}
+		
+		}
+
 	
 	/**
 	 * Opens an HTML file in the default browswer. Requires the following imports: 
@@ -66,7 +89,7 @@ public class Compiler {
 	 * 		import java.io.IOException;
 	 * @param htmlFileStr the String of an HTML file.
 	 */
-	void openHTMLFileInBrowswer(String htmlFileStr){
+	static void openHTMLFileInBrowser(String htmlFileStr){
 		File file= new File(htmlFileStr.trim());
 		if(!file.exists()){
 			System.err.println("File "+ htmlFileStr +" does not exist.");
