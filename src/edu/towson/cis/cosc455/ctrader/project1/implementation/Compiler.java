@@ -32,7 +32,7 @@ public class Compiler {
 	
 	public static void main(String[] args) throws BadFileExtension, CompilerException {
 		//Get File  Check Extension
-		file = ("Test10.mkd");
+		file = ("Test8.mkd");
 		try{
 			extension = file.split("\\.")[1];  //Store file extension in string 'extension'
 			if(!extension.equals(MKD)) throw new BadFileExtension("Error - file extension must be '.mkd' - Exiting Program"); //check to ensure correct file extension '.mkd' is used		
@@ -61,10 +61,10 @@ public class Compiler {
 		SemanticAnalyzer mexer = new SemanticAnalyzer();
 		mexer.runMexer();
 		
-		
+		//Convert StringBuilder Object into valid HTML file 
 		try {
-				String use = Compiler.file + ".html";
-				File file = new File(use);
+				String filename = file + ".html";
+				File file = new File(filename);
 
 				if (!file.exists()) {
 					file.createNewFile();
@@ -74,7 +74,7 @@ public class Compiler {
 				bw.write(htmlSB.toString());
 				bw.close();
 
-				openHTMLFileInBrowser(use);
+				openHTMLFileInBrowser(filename);
 			} catch(IOException ioe) {
 				ioe.printStackTrace();
 			}
@@ -83,7 +83,7 @@ public class Compiler {
 
 	
 	/**
-	 * Opens an HTML file in the default browswer. Requires the following imports: 
+	 * Opens an HTML file in the default browser. Requires the following imports: 
 	 * 		import java.awt.Desktop;
 	 * 		import java.io.File;
 	 * 		import java.io.IOException;

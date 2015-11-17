@@ -1,15 +1,10 @@
 package edu.towson.cis.cosc455.ctrader.project1.implementation;
-
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.Queue;
 import Exceptions.CompilerException;
 
 public class SemanticAnalyzer {
-	
 	boolean head = false;
 	boolean title = false;
 	boolean bold = false;

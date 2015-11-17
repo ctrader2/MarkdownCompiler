@@ -1,9 +1,7 @@
 package edu.towson.cis.cosc455.ctrader.project1.implementation;
-//This class stores all of the legal tokens that will be accepted within the markdown languge
+//This class stores all of the legal tokens that will be accepted within the markdown languge.
 
-import java.util.ArrayList;
-
-/*The naming convention I will use for token variables is lowercase 's' or 'e' for opening or closing html tags 
+/*The naming convention used for token variables is lowercase 's' or 'e' for opening or closing html tags 
 followed by the html tag they are describing in all caps*/ 
 
 public class Tokens {
@@ -62,8 +60,6 @@ public class Tokens {
 	
 	//Declare Array of Legal Characters
 	public static final char[] CHARACTERS = "abcdefghijklmnopqrstuvwxyz0123456789,.'\":?_!/".toCharArray();
-	public static final String TAB = "\t";
-	public static final String NEWLINE = "\n";
 	
 	//Declare Array of Legal Tokens
 	public static final String[] TOKENS = new String[]{sHTML, eHTML, sHEAD, eHEAD, sTITLE, eTITLE, sPARAGRAPH, ePARAGRAPH, sBOLD, eBOLD, 

@@ -1,12 +1,11 @@
 package edu.towson.cis.cosc455.ctrader.project1.implementation;
-
 import java.util.Arrays;
 
 import Exceptions.CompilerException;
 
 public class SyntaxAnalyzer implements edu.towson.cis.cosc455.ctrader.project1.interfaces.SyntaxAnalyzer {
 
-	@Override
+	
 	public void markdown() throws CompilerException {
 		if(Compiler.inputQueue.peek().equalsIgnoreCase(Tokens.sHTML)){
 				Compiler.outputQueue.add(Compiler.inputQueue.remove());
@@ -14,7 +13,6 @@ public class SyntaxAnalyzer implements edu.towson.cis.cosc455.ctrader.project1.i
 				head();
 				body();
 				if(Compiler.inputQueue.peek().equalsIgnoreCase(Tokens.eHTML)){
-					System.out.println("Syntax Check complete");
 					Compiler.outputQueue.add(Compiler.inputQueue.remove());
 				}else throw new CompilerException("Syntax Error: .mkd file does not end with #END");
 		}else throw new CompilerException("Syntax Error: .mkd file does not start with #BEGIN");
