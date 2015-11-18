@@ -34,7 +34,6 @@ public class SemanticAnalyzer {
 				defineVariable();
 			}
 			convert();
-			System.out.println(Compiler.htmlSB.toString());
 		}
 	}
 	
