@@ -32,7 +32,7 @@ public class Compiler {
 	
 	public static void main(String[] args) throws BadFileExtension, CompilerException {
 		//Get File  Check Extension
-		file = ("Test8.mkd");
+		file = (args[0]);
 		try{
 			extension = file.split("\\.")[1];  //Store file extension in string 'extension'
 			if(!extension.equals(MKD)) throw new BadFileExtension("Error - file extension must be '.mkd' - Exiting Program"); //check to ensure correct file extension '.mkd' is used		
